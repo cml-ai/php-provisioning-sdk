@@ -4,7 +4,7 @@ This repository contains the open source PHP SDK that allows you to access the C
 
 ## Usage
 
-> **Note:** This version of the Facebook SDK for PHP requires PHP 5.4 or greater.
+> **Note:** This version of the CML Provisioning SDK for PHP requires PHP 5.4 or greater.
 
 1. Get All Accounts
 ```php
