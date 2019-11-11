@@ -16,7 +16,7 @@ Complete documentation and examples are available [here](https://docs.cml.ai/?ve
 
 ## License
 
-Please see the [license file](https://github.com/cml-ai/php-provisioning-sdk/blob/master/LICENSE) for more information.
+Please see the [license file](https://github.com/cml-ai/php-provisioning-sdk/blob/master/LICENSE.md) for more information.
 
 ## Security Vulnerabilities
 
