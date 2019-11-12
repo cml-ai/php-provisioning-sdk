@@ -13,12 +13,13 @@ $accountId = $argv[3];
 $apiClient = new ApiClient($partnerId, $apiKey);
 
 try {
-    $result = $apiClient->get("/account/" . $accountId, null);
-
+	$result = $apiClient->put("/account/" . $accountId . "/subscribe", new stdClass());	//need to send empty object to PUT method
+	
     //Print Result
     print_r ($result);
 }
 catch (Exception $e) {
     echo "Caught exception: ",  $e->getMessage(), "\n";
 }
+
 ?>

@@ -32,7 +32,7 @@ try {
     $result = $apiClient->post("/account", $objAccount);
 
     //Print Result
-    echo($result);
+    print_r ($result);
 }
 catch (Exception $e) {
     echo "Caught exception: ",  $e->getMessage(), "\n";

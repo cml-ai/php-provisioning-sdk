@@ -30,8 +30,8 @@ class ApiClient {
 
     private function makeRequest($method, $urlSuffix, $data) {
         $url = $this->apiUrl . $urlSuffix;
-
-        if ($method == "GET") {
+        
+        if ($method == "GET" && !is_null($data)) {
             $url .= "?" . http_build_query($data, '', "&");
         }
 
@@ -50,7 +50,7 @@ class ApiClient {
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         if ($method == "POST") {
-            if ( $data != null) {
+            if ($data != null) {
                 //setup request to send json via POST
                 $payload = json_encode($data);
 
@@ -61,20 +61,24 @@ class ApiClient {
                 array_push($headers, "Content-Type:application/json");
             }
         }
-        else if ($method == "PUT" && $data != null) {
-            if ( $data != null) {
+        else if ($method == "PUT") {
+            if ($data != null) {
                 //setup request to send json via POST
                 $payload = json_encode($data);
 
                 //attach encoded JSON string to the POST fields
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-
-                //attach encoded JSON string to the POST fields
-                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-
-                //add contentType of headers array
-                array_push($headers, "Content-Type:application/json");
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);    
             }
+            
+            //add contentType of headers array
+            array_push($headers, "Content-Type:application/json");
+
+            //request method = PUT
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+        }
+        else if ($method == "DELETE") {
+            //request method = DELETE
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
         }
 
         //set request headers
@@ -82,6 +86,9 @@ class ApiClient {
 
         //execute the request
         $result = curl_exec($ch);
+
+        //to help debug request
+        $info = curl_getinfo($ch);
 
         if (curl_errno($ch)) {
             $error_msg = curl_error($ch);
@@ -94,8 +101,19 @@ class ApiClient {
             throw new Exception($error_msg);
         }
         else {
-            //Return Result
-            return $result;
+            $response = json_decode($result);
+            
+            if ($response->status == 200) {
+                if (!is_null($response) && isset($response) && property_exists($response, "data") && !empty((array)$response->data)) {
+                    return $response->data;
+                }
+                else {
+                    return true;
+                }
+            }
+            else {
+                throw new Exception($response->error->name . " : " . $response->error->message);
+            }
         }
     }
 }

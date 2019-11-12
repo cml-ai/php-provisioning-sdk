@@ -19,9 +19,28 @@ class Account {
         $this->addons=array();
     }
 
-    function addWebsiteAddon() {
+    public function addWebsiteAddon() {
         $objWebsiteAddon = new Addons("eWebsiteAddon", true);
         array_push($this->addons, $objWebsiteAddon);
+    }
+
+    public function removeWebsiteAddon() {
+        if (count($this->addons) > 0) {
+            $index = 0;
+
+            foreach ($this->addons as $item) {
+                if ($item->name == "eWebsiteAddon") {
+                    break;
+                }
+
+                $index++;
+            }
+
+            unset($this->addons[$index]);
+        }
+        else {
+            echo "Else";
+        }
     }
 }
 

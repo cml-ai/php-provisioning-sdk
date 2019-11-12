@@ -12,12 +12,7 @@ $apiKey = $argv[2];
 $apiClient = new ApiClient($partnerId, $apiKey);
 
 try {
-    $params = array(
-        "start" => "1",
-        "limit" => "2"
-    );
-
-    $result = $apiClient->get("/accounts", $params);
+    $result = $apiClient->get("/accounts/statistic", null);
 
     //Print Result
     print_r ($result);
