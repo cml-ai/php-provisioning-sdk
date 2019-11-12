@@ -14,14 +14,19 @@ $apiKey = $argv[2];
 $apiClient = new ApiClient($partnerId, $apiKey);
 
 try {
+    //setup query params
     $params = array(
         "start" => "1",
-        "limit" => "2"
+        "limit" => "2",
+        "query" => "acme",
+        "sortBy" => "startDate",
+        "sortDirection" => "desc",
+        "filter" => "active"
     );
 
     $result = $apiClient->get("/accounts", $params);
 
-    echo($result);
+    print_r ($result);
 }
 catch (Exception $e) {
     echo "Caught exception: ",  $e->getMessage(), "\n";
@@ -29,7 +34,6 @@ catch (Exception $e) {
 ```
 
 2. Get Single Account.
-
 ```php
 $partnerId = $argv[1];
 $apiKey = $argv[2];
@@ -39,13 +43,50 @@ $apiClient = new ApiClient($partnerId, $apiKey);
 
 try {
     $result = $apiClient->get("/account/" . $accountId, null);
-    
-    echo($result);
+
+    print_r ($result);
 }
 catch (Exception $e) {
     echo "Caught exception: ",  $e->getMessage(), "\n";
 }
 ```
+
+3. Create Account.
+```php
+$partnerId = $argv[1];
+$apiKey = $argv[2];
+
+//Declare Variables tp create new an account
+$name = "ACME Inc";
+$firstName = "Road";
+$lastName = "Runner";
+$email = "road.runner@yopmail.com";
+$passwd = "TheSuperSecret";
+$trialDays = 1;
+
+//Create new Account Object
+$objAccount = new Account($name, $firstName, $lastName, $email, $passwd, $trialDays);
+
+//Add website add-on
+$objAccount->addWebsiteAddon();
+
+//Remove website add-on
+//$objAccount->removeWebsiteAddon();
+
+$apiClient = new ApiClient($partnerId, $apiKey);
+
+try {
+    $result = $apiClient->post("/account", $objAccount);
+
+    //Print Result
+    print_r ($result);
+}
+catch (Exception $e) {
+    echo "Caught exception: ",  $e->getMessage(), "\n";
+}
+```
+
+All other examples are available [here](https://github.com/cml-ai/php-provisioning-sdk/tree/master/tests).
 
 Complete documentation and examples are available [here](https://docs.cml.ai/?version=latest).
 
