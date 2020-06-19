@@ -38,6 +38,9 @@ class ApiClient {
         //create a new cURL resource
         $ch = curl_init($url);
         
+        //set UserAgent
+        curl_setopt($ch, CURLOPT_USERAGENT, "CML Provisioning SDK PHP Client v1.0.0.0");
+
         //request headers
         $headers = array(
             "X-Api-Key:" . $this->apiKey
@@ -45,7 +48,7 @@ class ApiClient {
 
         //return response instead of outputting
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
+        
         //don't verify the peer's SSL certificate
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
